@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script type="module" defer>
+    
+    //이벤트 소스에 이벤트리스너 등록
+    document.querySelector("#button").addEventListener("click", ()=>{
+      requestBookList();
+    });
+
+    function requestBookList(){
+      //Fetch API를 이용한 비동기 통신
+      fetch("jsonBookList.jsp")
+       .then(response => response.json()) //1.promise에게 json리턴해주고..
+       .then(books => showMessage(books)) //2.역직렬화가되어 promise를 다시 then으로 받는다
+       .catch(error => showMessage(error))
+       .finally(()=>console.log("이미지 로딩 없애는 코드"));
+
+      } 
+    
+
+  function showMessage(books){
+    // console.dir(books);
+
+    let table =`<table border='1'>
+                <tr><th>교재명</th><th>장르</th><th>저자</th><th>출판사</th><th>가격</th></tr>`;
+
+   for (const book of books.list) {
+      table+= `<tr><td>${book.title}</td><td>${book.kind}</td><td>${book.autor}</td><td>${book.publisher}</td><td>${book.price}</td></tr>`;
+    }
+   table+=`</table>`;
+   document.querySelector("#book_list").innerHTML = table; 
+  }
+</script>
+
+</head>
+
+<body>
+
+  <button id="button">교재 목록 보기</button>
+  <h1>서버로부터 수신한 교재 목록</h1>
+  <div id="book_list">
+  
+  </div>
+  <h2 id ="message"></h2>
+  <h1>기존에 보여지는 내용들....</h1>
+
+</body>
+
+</html>

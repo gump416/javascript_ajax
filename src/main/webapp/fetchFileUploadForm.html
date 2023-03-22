@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title></title>
+
+  <script type="module" defer>
+    document.querySelector("#uploadForm").addEventListener("submit", uploadFiles);
+
+    function uploadFiles(event) {
+      event.preventDefault();
+      const comments = document.querySelector("#comments");
+      const upfile = document.querySelector("#upfile");
+
+      let formData = new FormData();
+      formData.append("comments", comments.value);
+      formData.append("upfile", upfile.files[0]);
+
+      const url = "upload.do";
+      const option = {
+        method: "post",
+        body: formData,
+      };
+      fetch(url, option) //
+        .then(response => response.text())
+        .then(response => console.log(response))
+        .catch(error => console.log(error));
+    }
+  </script>
+
+</head>
+
+<body>
+  <h2>Fetch API를 이용한 파일 업로드</h2>
+  <form action="" id="uploadForm">
+    <input type="text" id="comments" placeholder="파일 설명"><br>
+    <input type="file" id="upfile"><br>
+    <button type="submit">업로드</button>
+  </form>
+</body>
+
+</html>
